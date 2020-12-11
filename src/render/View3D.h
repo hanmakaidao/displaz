@@ -21,6 +21,7 @@
 #include "geometrycollection.h"
 #include "Annotation.h"
 
+
 class QGLShaderProgram;
 class QItemSelectionModel;
 class QTimer;
@@ -189,7 +190,24 @@ class View3D : public QGLWidget
         double m_devicePixelRatio;
 };
 
+#include <QtWidgets/qgraphicsview.h>
+class GraphicsView : public QGraphicsView
+{
+public:
+	GraphicsView()
+	{
+		setWindowTitle(tr("Graphics View window"));
+		setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+		//setRenderHints(QPainter::SmoothPixmapTransform);
+	}
 
+protected:
+	void resizeEvent(QResizeEvent *event) override {
+		if (scene())
+			scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
+		QGraphicsView::resizeEvent(event);
+	}
+};
 
 #endif // DISPLAZ_VIEW3D_H_INCLUDED
 

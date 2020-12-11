@@ -7,7 +7,6 @@
 
 #include <QDir>
 #include <QMainWindow>
-
 #include <memory>
 
 class QActionGroup;
@@ -27,7 +26,7 @@ class IpcChannel;
 class FileLoader;
 class HookManager;
 
-
+class GraphicsView;
 //------------------------------------------------------------------------------
 /// Main window for point cloud viewer application
 class PointViewerMainWindow : public QMainWindow
@@ -79,6 +78,7 @@ class PointViewerMainWindow : public QMainWindow
         // Gui objects
         QProgressBar* m_progressBar;
         View3D* m_pointView;
+		GraphicsView* m_graphicsView;
         ShaderEditor* m_shaderEditor;
         HelpDialog* m_helpDialog;
         LogViewer* m_logTextView;
