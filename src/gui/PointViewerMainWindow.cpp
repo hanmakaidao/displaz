@@ -78,7 +78,6 @@ bool necessaryExtensionsSupported()
 PointViewerMainWindow::PointViewerMainWindow(const QGLFormat& format)
     : m_progressBar(0),
     m_pointView(0),
-	m_graphicsView(0),
     m_shaderEditor(0),
     m_helpDialog(0),
     m_logTextView(0),
@@ -228,7 +227,9 @@ PointViewerMainWindow::PointViewerMainWindow(const QGLFormat& format)
     //--------------------------------------------------
     // Point viewer
     m_pointView = new View3D(m_geometries, format, this);
-
+	m_pointView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+	m_pointView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+	////-------------------------------
     connect(drawBoundingBoxes, SIGNAL(triggered()),
             m_pointView, SLOT(toggleDrawBoundingBoxes()));
     connect(drawCursor, SIGNAL(triggered()),
@@ -243,15 +244,6 @@ PointViewerMainWindow::PointViewerMainWindow(const QGLFormat& format)
             m_pointView, SLOT(toggleCameraMode()));
     connect(m_geometries, SIGNAL(rowsInserted(QModelIndex,int,int)),
             this, SLOT(geometryRowsInserted(QModelIndex,int,int)));
-
-	//---------------my tst------------²âÊÔ-----------------------------------
-	
-	QGLWidget *widget = new QGLWidget(QGLFormat(QGL::SampleBuffers));
-	widget->makeCurrent();
-	m_graphicsView = new  GraphicsView();
-	m_graphicsView->setViewport(widget);
-	m_graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-
 
     //--------------------------------------------------
     // Docked widgets
@@ -341,17 +333,10 @@ PointViewerMainWindow::PointViewerMainWindow(const QGLFormat& format)
     // Create custom hook events from CLI at runtime
     m_hookManager = new HookManager(this);
 
-	//---------------
-	QHBoxLayout *layout = new QHBoxLayout;
-	
-	QWidget* central = new QWidget;
 
-	setCentralWidget(central);
+	setCentralWidget(m_pointView);
 
-	central->setLayout(layout);
-
-	layout->addWidget(m_pointView);
-	//layout->addWidget(m_graphicsView);
+	//layout->addWidget(m_graphicsView,0,2);
 	//this->setLayout(layout);
 	
 }

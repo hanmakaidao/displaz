@@ -78,7 +78,6 @@ class PointViewerMainWindow : public QMainWindow
         // Gui objects
         QProgressBar* m_progressBar;
         View3D* m_pointView;
-		GraphicsView* m_graphicsView;
         ShaderEditor* m_shaderEditor;
         HelpDialog* m_helpDialog;
         LogViewer* m_logTextView;

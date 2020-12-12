@@ -21,7 +21,7 @@
 #include "geometrycollection.h"
 #include "Annotation.h"
 
-
+#include "qgraphicsview.h"
 class QGLShaderProgram;
 class QItemSelectionModel;
 class QTimer;
@@ -30,9 +30,10 @@ class QGLFormat;
 class ShaderProgram;
 struct TransformState;
 
+
 //------------------------------------------------------------------------------
 /// OpenGL-based viewer widget for point clouds
-class View3D : public QGLWidget
+class View3D : public QGraphicsView
 {
     Q_OBJECT
     public:
@@ -188,25 +189,6 @@ class View3D : public QGLWidget
         unsigned int m_quadLabelVertexArray;
 
         double m_devicePixelRatio;
-};
-
-#include <QtWidgets/qgraphicsview.h>
-class GraphicsView : public QGraphicsView
-{
-public:
-	GraphicsView()
-	{
-		setWindowTitle(tr("Graphics View window"));
-		setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-		//setRenderHints(QPainter::SmoothPixmapTransform);
-	}
-
-protected:
-	void resizeEvent(QResizeEvent *event) override {
-		if (scene())
-			scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
-		QGraphicsView::resizeEvent(event);
-	}
 };
 
 #endif // DISPLAZ_VIEW3D_H_INCLUDED

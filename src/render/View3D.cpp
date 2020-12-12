@@ -26,8 +26,8 @@
 
 //------------------------------------------------------------------------------
 View3D::View3D(GeometryCollection* geometries, const QGLFormat& format, QWidget *parent)
-    : QGLWidget(format, parent),
-    m_camera(false, false),
+  //  : QGLWidget(format, parent),
+    :m_camera(false, false),
     m_mouseButton(Qt::NoButton),
     m_explicitCursorPos(false),
     m_cursorPos(0),
@@ -73,7 +73,9 @@ View3D::View3D(GeometryCollection* geometries, const QGLFormat& format, QWidget 
     connect(&m_camera, SIGNAL(projectionChanged()), this, SLOT(restartRender()));
     connect(&m_camera, SIGNAL(viewChanged()), this, SLOT(restartRender()));
 
-    makeCurrent();
+    //makeCurrent();
+	//
+
     m_shaderProgram.reset(new ShaderProgram());
     connect(m_shaderProgram.get(), SIGNAL(uniformValuesChanged()),
             this, SLOT(restartRender()));
@@ -85,6 +87,7 @@ View3D::View3D(GeometryCollection* geometries, const QGLFormat& format, QWidget 
     m_incrementalFrameTimer = new QTimer(this);
     m_incrementalFrameTimer->setSingleShot(false);
     connect(m_incrementalFrameTimer, SIGNAL(timeout()), this, SLOT(updateGL()));
+	//initializeGL();
 }
 
 
@@ -108,15 +111,19 @@ void View3D::initializeGLGeometry(int begin, int end)
     const GeometryCollection::GeometryVec& geoms = m_geometries->get();
     for (int i = begin; i < end; ++i)
     {
-        if (m_boundingBoxShader->isValid())
-        {
-            // TODO: build a shader manager for this
-            geoms[i]->setShaderId("boundingbox", m_boundingBoxShader->shaderProgram().programId());
-            geoms[i]->setShaderId("meshface", m_meshFaceShader->shaderProgram().programId());
-            geoms[i]->setShaderId("meshedge", m_meshEdgeShader->shaderProgram().programId());
-            geoms[i]->setShaderId("annotation", m_annotationShader->shaderProgram().programId());
-            geoms[i]->initializeGL();
-        }
+		if (m_boundingBoxShader)
+		{
+			if (m_boundingBoxShader->isValid())
+			{
+				// TODO: build a shader manager for this
+				geoms[i]->setShaderId("boundingbox", m_boundingBoxShader->shaderProgram().programId());
+				geoms[i]->setShaderId("meshface", m_meshFaceShader->shaderProgram().programId());
+				geoms[i]->setShaderId("meshedge", m_meshEdgeShader->shaderProgram().programId());
+				geoms[i]->setShaderId("annotation", m_annotationShader->shaderProgram().programId());
+				geoms[i]->initializeGL();
+			}
+		}
+
     }
 }
 
@@ -277,8 +284,8 @@ void View3D::initializeGL()
     if (glewInit() != GLEW_OK)
     {
         g_logger.error("%s", "Failed to initialize GLEW");
-        m_badOpenGL = true;
-        return;
+     //   m_badOpenGL = true;
+     //   return;
     }
 
     g_logger.info("OpenGL implementation:\n"
