@@ -14,7 +14,7 @@
 #include "InterProcessLock.h"
 #include "util.h"
 #include "guimain.h"
-
+#include "glutil.h"
 //------------------------------------------------------------------------------
 
 /// Callback and globals for positional argument parsing
@@ -53,6 +53,7 @@ static int hooks(int argc, const char *argv[])
 
 int main(int argc, char *argv[])
 {
+	
     ensureUtf8Argv(&argc, &argv);
 
     if (argc > 1 && std::string(argv[1]) == "-gui")

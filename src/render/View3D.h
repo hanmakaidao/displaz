@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 
+#include <GL/glew.h>
 #include "glutil.h"
 #define QT_NO_OPENGL_ES_2
 
@@ -37,7 +38,7 @@ class View3D : public QGraphicsView
 {
     Q_OBJECT
     public:
-        View3D(GeometryCollection* geometries, const QGLFormat& format, QWidget *parent = NULL);
+        View3D(GeometryCollection* geometries, const QGLFormat& format);
         ~View3D();
 
         /// Return shader used for displaying points

@@ -25,8 +25,7 @@
 #include "util.h"
 
 //------------------------------------------------------------------------------
-View3D::View3D(GeometryCollection* geometries, const QGLFormat& format, QWidget *parent)
-  //  : QGLWidget(format, parent),
+View3D::View3D(GeometryCollection* geometries, const QGLFormat& format)
     :m_camera(false, false),
     m_mouseButton(Qt::NoButton),
     m_explicitCursorPos(false),
@@ -87,7 +86,8 @@ View3D::View3D(GeometryCollection* geometries, const QGLFormat& format, QWidget 
     m_incrementalFrameTimer = new QTimer(this);
     m_incrementalFrameTimer->setSingleShot(false);
     connect(m_incrementalFrameTimer, SIGNAL(timeout()), this, SLOT(updateGL()));
-	//initializeGL();
+	this->setViewport(new QGLWidget(format));
+	initializeGL();
 }
 
 
@@ -281,25 +281,26 @@ double View3D::getDevicePixelRatio()
 
 void View3D::initializeGL()
 {
+	/*
     if (glewInit() != GLEW_OK)
     {
         g_logger.error("%s", "Failed to initialize GLEW");
-     //   m_badOpenGL = true;
-     //   return;
+        m_badOpenGL = true;
+        return;
     }
-
+	
     g_logger.info("OpenGL implementation:\n"
                   "  GL_VENDOR    = %s\n"
                   "  GL_RENDERER  = %s\n"
                   "  GL_VERSION   = %s\n"
-                  "  GLSL_VERSION = %s\n"
-                  "  GLEW_VERSION = %s",
+                  "  GLSL_VERSION = %s\n",
+                 // "  GLEW_VERSION = %s",
                   (const char*)glGetString(GL_VENDOR),
                   (const char*)glGetString(GL_RENDERER),
                   (const char*)glGetString(GL_VERSION),
-                  (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION),
-                  (const char*)glewGetString(GLEW_VERSION));
-
+                  (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+                 // (const char*)glewGetString(GLEW_VERSION));
+				 */
     // GL_CHECK has to be defined for this to actually do something
     glCheckError();
 
